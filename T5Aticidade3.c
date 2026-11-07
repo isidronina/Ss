@@ -1,30 +1,35 @@
 #include <stdio.h>
 
-void coletar(float *pista, int *voltas, float *tempo_volta) {
-    scanf("%f", pista);
-    scanf("%d", voltas);
-    scanf("%f", tempo_volta);
+void coletar(char meta[], float *valor_meta, float *salario, float *despesas) {
+    scanf(" %[^\n]s", meta);
+    scanf("%f", valor_meta);
+    scanf("%f", salario);
+    scanf("%f", despesas);
 }
 
-void processar(float pista, int voltas, float tempo_volta, float *distancia, float *previsao_min) {
-    *distancia = (pista * voltas) / 1000.0;
-    float tempo_total_seg = tempo_volta * voltas;
-    *previsao_min = tempo_total_seg / 60.0;
+void processar(float salario, float despesas, float valor_meta, float *saldo, float *reserva, float *disponivel, float *meses) {
+    *saldo = salario - despesas;
+    *reserva = *saldo * 0.30;
+    *disponivel = *saldo - *reserva;
+    *meses = valor_meta / *disponivel;
 }
 
-void exibir(float distancia, float previsao_min) {
-    printf("Análise Preditiva Concluída\n");
-    printf("Distância total a ser percorrida: %.2f km.\n", distancia);
-    printf("Previsão de conclusão: %.1f minutos.\n", previsao_min);
+void exibir(char meta[], float valor_meta, float salario, float despesas, float saldo, float reserva, float disponivel, float meses) {
+    printf("Meta: %s (R$ %.2f)\n", meta, valor_meta);
+    printf("Salário: R$ %.2f - Despesas: R$ %.2f\n", salario, despesas);
+    printf("Saldo após despesas: R$ %.2f\n", saldo);
+    printf("Reserva fixa (30%%): R$ %.2f\n", reserva);
+    printf("Valor disponível para a meta: R$ %.2f por mês\n", disponivel);
+    printf("Prazo estimado para atingir a meta: %.2f meses\n", meses);
 }
 
 int main() {
-    float pista, tempo_volta, distancia, previsao_min;
-    int voltas;
+    char meta[100];
+    float valor_meta, salario, despesas, saldo, reserva, disponivel, meses;
     
-    coletar(&pista, &voltas, &tempo_volta);
-    processar(pista, voltas, tempo_volta, &distancia, &previsao_min);
-    exibir(distancia, previsao_min);
+    coletar(meta, &valor_meta, &salario, &despesas);
+    processar(salario, despesas, valor_meta, &saldo, &reserva, &disponivel, &meses);
+    exibir(meta, valor_meta, salario, despesas, saldo, reserva, disponivel, meses);
     
     return 0;
 }
